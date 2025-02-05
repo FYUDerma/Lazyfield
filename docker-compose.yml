@@ -1,0 +1,29 @@
+services:
+  frontend:
+    image: Nginx-Three.JS
+    build:
+      context: ./Front-end
+      dockerfile: Dockerfile
+    ports:
+      - "8080"
+    depends_on:
+      backend:
+        condition: service_started
+      db:
+        condition: service_started
+
+  backend:
+    image: Node.JS-Express
+    build:
+      context: ./Back-end
+      dockerfile: Dockerfile
+    ports:
+      - "3000"
+
+  db:
+    image: postgres
+    restart: always
+
+    depends_on:
+      backend:
+        condition: service_started
