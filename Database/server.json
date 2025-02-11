@@ -1,0 +1,13 @@
+{
+  "Servers": {
+    "1": {
+      "Name": "Lazyfield-DB",
+      "Group": "Lazyfield",
+      "Port": 5432,
+      "Username": "lzadmin",
+      "Host": "Lazyfield-DB",
+      "MaintenanceDB": "lazyfield",
+      "SSLMode": "prefer"
+    }
+  }
+}
