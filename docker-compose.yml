@@ -1,29 +1,52 @@
 services:
-  frontend:
-    image: Nginx-Three.JS
-    build:
-      context: ./Front-end
-      dockerfile: Dockerfile
-    ports:
-      - "8080"
-    depends_on:
-      backend:
-        condition: service_started
-      db:
-        condition: service_started
+  # frontend:
+  #   image: nginx-three.js
+  #   build:
+  #     context: ./Front-end
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - "8080"
+  #   depends_on:
+  #     backend:
+  #       condition: service_started
+  #     db:
+  #       condition: service_started
 
-  backend:
-    image: Node.JS-Express
-    build:
-      context: ./Back-end
-      dockerfile: Dockerfile
-    ports:
-      - "3000"
+  # backend:
+  #   image: node.js-express
+  #   build:
+  #     context: ./Back-end
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - "3000"
 
   db:
+    container_name: Lazyfield-DB
     image: postgres
-    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: ${Lazyfield_DATABASE_USER}
+      POSTGRES_PASSWORD: ${Lazyfield_DATABASE_PASSWORD}
+      POSTGRES_DB: ${Lazyfield_DATABASE_NAME}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./Database/init.sql:/docker-entrypoint-initdb.d/init.sql
 
+  pgadmin:
+    container_name: Lazyfield-PgAdmin
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${Lazyfield_DATABASE_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${Lazyfield_DATABASE_PASSWORD}
+      PGADMIN_LISTEN_PORT: 80
+      PGADMIN_CONFIG_SERVER_MODE: "False"
+    ports:
+      - "5050:80"
+    volumes:
+      - ./Database/server.json:/pgadmin4/servers.json
     depends_on:
-      backend:
-        condition: service_started
+      - db
+      
+volumes:
+  pgdata:
