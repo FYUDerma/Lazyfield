@@ -45,6 +45,8 @@ services:
       - "5050:80"
     volumes:
       - ./Database/server.json:/pgadmin4/servers.json
-
+    depends_on:
+      - db
+      
 volumes:
   pgdata:
