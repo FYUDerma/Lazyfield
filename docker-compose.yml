@@ -15,8 +15,8 @@ services:
   backend:
     image: node.js-express
     build:
-    context: ./Back-end
-    dockerfile: Dockerfile
+      context: ./Back-end
+      dockerfile: Dockerfile
     ports:
       - "3000"
 
