@@ -1,0 +1,26 @@
+{
+  "name": "lazyfield",
+  "version": "1.0.0",
+  "description": "This is the front end of our game lazyfield",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FYUDerma/Lazyfield.git"
+  },
+  "author": "FYUDerma, SadScourge",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/FYUDerma/Lazyfield/issues"
+  },
+  "homepage": "https://github.com/FYUDerma/Lazyfield#readme",
+  "dependencies": {
+    "three": "^0.173.0",
+    "typescript": "^5.7.3"
+  },
+  "devDependencies": {
+    "vite": "^6.0.11"
+  }
+}
