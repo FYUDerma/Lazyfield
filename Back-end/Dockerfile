@@ -11,10 +11,13 @@ COPY package*.json ./
 RUN npm install
 
 # Copy the rest of the application code
-COPY ./app ./app
+COPY . .
+
+# Copy the .env file
+COPY ../.env /app/.env
 
 # Expose the port the app runs on
 EXPOSE 3000
 
 # Define the command to run the app
-CMD ["node", "app/index.js"]
+CMD ["node", "app/login.js"]
