@@ -18,7 +18,14 @@ services:
       context: ./Back-end
       dockerfile: Dockerfile
     ports:
-      - "3000"
+      - "3000:3000"
+    environment:
+      DATABASE_HOST: ${Lazyfield_DATABASE_HOST}
+      DATABASE_USER: ${Lazyfield_DATABASE_USER}
+      DATABASE_PASSWORD: ${Lazyfield_DATABASE_PASSWORD}
+      DATABASE_NAME: ${Lazyfield_DATABASE_NAME}
+    depends_on:
+      - db
 
   db:
     container_name: Lazyfield-DB
