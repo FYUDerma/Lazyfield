@@ -7,18 +7,31 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div id="clickZone"></div>
-    <div class="hud">
-        <div class="menuButton">
-            <div class="bar1"></div>
-            <div class="bar2"></div>
-            <div class="bar3"></div>
+        <div class="scene">
+            <div id="clickZone"></div>
+            <div class="hud">
+                <div id="menuButton" class="menuButton">
+                    <div class="bar1"></div>
+                    <div class="bar2"></div>
+                    <div class="bar3"></div>
+                </div>
+                <div id="menuBox" class="hidden">
+                    <h1>Progression</h1>
+                    <button class="button1">Save</button>
+                    <button class="button2">Load</button>
+                    <button id="resetButton" class="button3">Reset</button>
+                </div>
+                <div class="player-counter">
+                    <span>Carrots:</span> <span id="playerClickCount">0</span>
+                </div>
+                <div id="upgradesButton" class="upgradesButton">U</div>
+                <div id="upgradesMenu" class="hidden">
+                    <h2>Upgrades</h2>
+                    <ul id="upgradeList"></ul>
+                </div>
+            </div>
+            <script type="module" src="/main.js"></script>
+            <script src="clicker.js"></script>
         </div>
-        <div class="player-counter">
-            <span>Carrots:</span> <span id="playerClickCount">0</span>
-        </div>
-    </div>
-    <script type="module" src="/main.js"></script>
-    <script src="clicker.js"></script>
 </body>
 </html>

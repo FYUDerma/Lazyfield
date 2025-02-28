@@ -27,7 +27,7 @@ console.log( controls.object.position );
 });
 
 // SKYBOX
-const skytexture = textureloader.load( './assets/sky/sky_05_2k.png', () => {
+const skytexture = textureloader.load( './assets/sky/sky_clouds_09_2k.png', () => {
     skytexture.mapping = THREE.EquirectangularReflectionMapping;
     skytexture.colorSpace = THREE.SRGBColorSpace;
     scene.background = skytexture;
@@ -48,8 +48,8 @@ function onWindowResize() {
 }
 
 // AMBIENT LIGHT
-const skyColor = 0xB1E1FF;  // light blue
-const groundColor = 0xB97A20;  // brownish orange
+const skyColor = 0xB1E1FF;
+const groundColor = 0xB97A20;
 const intensity = 5;
 const light = new THREE.HemisphereLight(skyColor, groundColor, intensity);
 scene.add(light);
@@ -62,17 +62,16 @@ modelloader.load('./assets/models/carrot.glb', function(model) {
     scene.add (model.scene);
     function animate() {
         requestAnimationFrame(animate);
-        carrot.rotation.y += 0.005; // Adjust the rotation speed as needed
+        carrot.rotation.y += 0.005; // change rota speed here
         renderer.render(scene, camera);
     }
 
-    animate(); // Start the animation loop
+    animate();
 }, undefined, function(error) {
     console.error(error);
 });
 
 function animate() {
-    //requestAnimationFrame( animate );
     renderer.render( scene, camera );
     controls.update();
 };

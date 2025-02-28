@@ -1,24 +1,37 @@
 let clickCount = 0;
+let clickMultiplier = 1;
 
 const playerClickCountElem = document.getElementById('playerClickCount');
 const clickZone = document.getElementById('clickZone');
+const menuButton = document.getElementById('menuButton');
+const menuBox = document.getElementById('menuBox');
+const upgradesButton = document.getElementById('upgradesButton');
+const upgradesMenu = document.getElementById('upgradesMenu');
+const resetButton = document.getElementById('resetButton');
+
+menuButton.addEventListener('click', () => {
+    menuBox.classList.toggle('hidden');
+});
+upgradesButton.addEventListener('click', () => {
+    upgradesMenu.classList.toggle('hidden')
+});
+resetButton.addEventListener('click', () => {
+    resetProgression();
+});
 
 function clickEvent(event) {
-    clickCount++
+    clickCount += clickMultiplier;
     playerClickCountElem.textContent = clickCount;
-    saveClickCount();
-
-    // Create particle element
+    saveProgression();
+// particle effect
     const particle = document.createElement('div');
     particle.className = 'particle';
-    particle.textContent = '+1';
+    particle.textContent = `+${clickMultiplier}`;
     document.body.appendChild(particle);
 
-    // Position the particle at the click location
     particle.style.left = `${event.clientX - 30}px`;
     particle.style.top = `${event.clientY - 70}px`;
 
-    // Remove the particle after animation
     particle.addEventListener('animationend', () => {
         particle.remove();
     });
@@ -28,8 +41,10 @@ clickZone.addEventListener('click', (event) => {
     clickEvent(event);
 });
 
-function saveClickCount() {
+function saveProgression() {
     setCookie('clickCount', clickCount, 7);
+    setCookie('clickMultiplier', clickMultiplier, 7);
+    setCookie('upgrades', JSON.stringify(upgrades), 7);
 }
 
 function setCookie(name, value, days) {
@@ -50,14 +65,66 @@ function getCookie(name) {
     return null;
 }
 
-function loadClickCount() {
+function loadProgression() {
     const savedCount = getCookie('clickCount');
     if (savedCount) {
         clickCount = parseInt(savedCount);
         playerClickCountElem.textContent = clickCount;
     }
+    const savedMultiplier = getCookie('clickMultiplier');
+    if (savedMultiplier) {
+        clickMultiplier = parseInt(savedMultiplier);
+    }
+    const savedUpgrades = getCookie('upgrades');
+    if (savedUpgrades) {
+        upgrades = JSON.parse(savedUpgrades);
+        displayUpgrades();
+    }
+}
+
+let upgrades = [
+    { name: 'Double Clicks', cost: 10, effect: () => clickMultiplier *= 2 },
+    { name: 'Triple Clicks', cost: 50, effect: () => clickMultiplier *= 3 },
+];
+
+function displayUpgrades() {
+    const upgradeList = document.getElementById('upgradeList');
+    upgradeList.innerHTML = '';
+    upgrades.forEach((upgrade, index) => {
+        const li = document.createElement('li');
+        li.textContent = `${upgrade.name} - Cost: ${upgrade.cost} carrots`;
+        li.addEventListener('click', () => purchaseUpgrade(index));
+        upgradeList.appendChild(li);
+    });
+}
+function purchaseUpgrade(index) {
+    const upgrade = upgrades[index];
+    if (clickCount >= upgrade.cost) {
+        clickCount -= upgrade.cost;
+        upgrade.effect();
+        upgrades.splice(index, 1); // Remove the purchased upgrade
+        displayUpgrades();
+        playerClickCountElem.textContent = clickCount;
+        saveClickCount();
+    } else {
+        alert('Not enough carrots!');
+    }
+}
+
+function resetProgression() {
+    clickCount = 0;
+    clickMultiplier = 1;
+    upgrades = [
+        { name: 'Double Clicks', cost: 10, effect: () => clickMultiplier *= 2 },
+        { name: 'Quadruple Clicks', cost: 50, effect: () => clickMultiplier *= 2 },
+        { name: 'Octo Clicks', cost: 500, effect: () => clickMultiplier *= 2 },
+    ];
+    playerClickCountElem.textContent = clickCount;
+    displayUpgrades();
+    saveProgression();
 }
 
 window.onload = () => {
-    loadClickCount();
+    loadProgression();
+    displayUpgrades();
 };
