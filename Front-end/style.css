@@ -87,6 +87,13 @@ body {
     cursor: pointer;
 }
 
+#upgradeList {
+    text-align: center;
+    padding-right: 2
+    0px;
+    padding-left: 15px;
+}
+
 /* +1 particle */
 .particle {
     position: absolute;
