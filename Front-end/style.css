@@ -87,6 +87,13 @@ body {
     cursor: pointer;
 }
 
+#upgradeList {
+    text-align: center;
+    padding-right: 2
+    0px;
+    padding-left: 15px;
+}
+
 /* +1 particle */
 .particle {
     position: absolute;
@@ -180,4 +187,64 @@ button:active {
     font-size: 15px;
     font-family: Arial, Helvetica, sans-serif;
     text-align: center;
+}
+
+/* Login page elements */
+.logo {
+    width: auto;
+    height: 40%;
+}
+
+.menuBox {
+    display: grid;
+    color: #484848;
+    background: rgb(201,201,201);
+    background: linear-gradient(0deg, rgba(201,201,201,1) 0%, rgba(255,255,255,1) 100%);
+    border: 3px solid #4D6D8A;
+    padding: 10px;
+    border-radius: 7px;
+    box-shadow: inset 0 -4px rgba(0, 0, 0, 0.2);
+    font-size: 15px;
+    font-family: Arial, Helvetica, sans-serif;
+    text-align: center;
+}
+
+.loginButton {
+    background-color: #72cb72;
+    grid-column: 1;
+    grid-row: 5;
+    margin: auto;
+    margin-top: 8px;
+    font-size: 12px;
+}
+
+.registerButton {
+    background-color: #3a65d2;
+    font-size: 12px;
+    margin: auto;
+    margin-top: 8px;
+}
+
+.cancelButton {
+    background-color: #d23a3a;
+    font-size: 12px;
+    margin: auto;
+    margin-top: 8px;
+}
+
+.notRegistered {
+    margin-top: 10px;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.flexelement {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100%;
+    gap: 20px;
 }

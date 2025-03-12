@@ -84,7 +84,8 @@ function loadProgression() {
 
 let upgrades = [
     { name: 'Double Clicks', cost: 10, effect: () => clickMultiplier *= 2 },
-    { name: 'Triple Clicks', cost: 50, effect: () => clickMultiplier *= 3 },
+    { name: 'Quadruple Clicks', cost: 50, effect: () => clickMultiplier *= 2 },
+    { name: 'Octo Clicks', cost: 500, effect: () => clickMultiplier *= 2 },
 ];
 
 function displayUpgrades() {
@@ -97,15 +98,16 @@ function displayUpgrades() {
         upgradeList.appendChild(li);
     });
 }
+
 function purchaseUpgrade(index) {
     const upgrade = upgrades[index];
     if (clickCount >= upgrade.cost) {
         clickCount -= upgrade.cost;
         upgrade.effect();
         upgrades.splice(index, 1); // Remove the purchased upgrade
-        displayUpgrades();
         playerClickCountElem.textContent = clickCount;
-        saveClickCount();
+        saveProgression();
+        displayUpgrades();
     } else {
         alert('Not enough carrots!');
     }
