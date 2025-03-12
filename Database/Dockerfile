@@ -8,7 +8,7 @@ RUN apt update && apt install -y \
     postgresql-contrib
 
 # Copy the database initialization script to the container
-COPY ./init.sql /docker-entrypoint-initdb.d/
+COPY ./tables/*.sql /docker-entrypoint-initdb.d/
 
 # Expose the port 5432
 EXPOSE 5432
