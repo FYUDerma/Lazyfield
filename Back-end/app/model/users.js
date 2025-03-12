@@ -3,9 +3,9 @@ const client = require('../config/database');
 
 const User = client.define('User', {
   userid: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.UUID,
+    defaultValue: DataTypes.UUIDV4,
     primaryKey: true,
-    autoIncrement: true
   },
   username: {
     type: DataTypes.STRING,
