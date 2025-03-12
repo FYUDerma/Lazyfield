@@ -1,4 +1,4 @@
-const { Client } = require('pg');
+const { Sequelize } = require('sequelize');
 const dotenv = require('dotenv');
 dotenv.config();
 
@@ -10,22 +10,24 @@ const password = process.env.Lazyfield_DATABASE_PASSWORD;
 const port = process.env.Lazyfield_DATABASE_PORT;
 
 "Create a new client"
-const client = new Client({
-  user: user,
-  host: host,
-  database: database,
-  password: password,
-  port: port,
-});
+const client = new Sequelize(
+  database,
+  user,
+  password,
+  {
+    host: host,
+    port: port,
+    dialect: 'postgres',
+    logging: false,
+  }
+);
+
 
 "Connect to the database"
-client.connect(function(err) {
-  if (err) {
-    throw err;
-  } else {
-    console.log('Connected to database');
-  }
-});
+client
+  .authenticate()
+  .then(() => console.log("Connected to the database"))
+  .catch((error) => console.log("Error connecting to the database: ", error));
 
 "Export the client"
 module.exports = client;
