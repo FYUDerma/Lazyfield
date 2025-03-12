@@ -1,16 +1,16 @@
 services:
-  #frontend:
-  #   image: nginx-three.js
-  #   build:
-  #     context: ./Front-end
-  #     dockerfile: Dockerfile
-  #   ports:
-  #     - "8080"
-  #   depends_on:
-  #     backend:
-  #       condition: service_started
-  #     db:
-  #       condition: service_started
+  frontend:
+     image: nginx-three.js
+     build:
+       context: ./Front-end
+       dockerfile: Dockerfile
+     ports:
+       - "8080"
+     depends_on:
+       backend:
+         condition: service_started
+       db:
+         condition: service_started
 
   db:
     container_name: Lazyfield-DB
