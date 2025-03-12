@@ -1,31 +1,16 @@
 services:
-  frontend:
-     image: nginx-three.js
-     build:
-       context: ./Front-end
-       dockerfile: Dockerfile
-     ports:
-       - "8080"
-     depends_on:
-       backend:
-         condition: service_started
-       db:
-         condition: service_started
-
-  backend:
-    image: node.js-express
-    build:
-      context: ./Back-end
-      dockerfile: Dockerfile
-    ports:
-      - "3000:3000"
-    environment:
-      DATABASE_HOST: ${Lazyfield_DATABASE_HOST}
-      DATABASE_USER: ${Lazyfield_DATABASE_USER}
-      DATABASE_PASSWORD: ${Lazyfield_DATABASE_PASSWORD}
-      DATABASE_NAME: ${Lazyfield_DATABASE_NAME}
-    depends_on:
-      - db
+  #frontend:
+  #   image: nginx-three.js
+  #   build:
+  #     context: ./Front-end
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - "8080"
+  #   depends_on:
+  #     backend:
+  #       condition: service_started
+  #     db:
+  #       condition: service_started
 
   db:
     container_name: Lazyfield-DB
@@ -38,7 +23,23 @@ services:
       POSTGRES_DB: ${Lazyfield_DATABASE_NAME}
     volumes:
       - pgdata:/var/lib/postgresql/data
-      - ./Database/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./Database/tables/*.sql:/docker-entrypoint-initdb.d/tables/*.sql
+  backend:
+    image: node.js-express
+    build:
+      context: ./Back-end
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+    environment:
+      DATABASE_HOST: ${Lazyfield_DATABASE_HOST}
+      DATABASE_USER: ${Lazyfield_DATABASE_USER}
+      DATABASE_PASSWORD: ${Lazyfield_DATABASE_PASSWORD}
+      DATABASE_NAME: ${Lazyfield_DATABASE_NAME}
+    depends_on:
+      - db
 
   pgadmin:
     container_name: Lazyfield-PgAdmin
