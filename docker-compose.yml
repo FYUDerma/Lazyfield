@@ -23,7 +23,7 @@ services:
       POSTGRES_DB: ${Lazyfield_DATABASE_NAME}
     volumes:
       - pgdata:/var/lib/postgresql/data
-      - ./Database/tables/*.sql:/docker-entrypoint-initdb.d/tables/*.sql
+      - ./Database/tables:/docker-entrypoint-initdb.d/tables
   backend:
     image: node.js-express
     build:
