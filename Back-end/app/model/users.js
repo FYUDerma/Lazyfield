@@ -2,6 +2,11 @@ const { DataTypes } = require('sequelize');
 const client = require('../config/database');
 
 const User = client.define('User', {
+  userid: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true
+  },
   username: {
     type: DataTypes.STRING,
     allowNull: false
