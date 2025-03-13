@@ -6,11 +6,17 @@ const router = express.Router();
 // Register
 router.post('/register', async (req, res) => {
   try {
-    // Use the regex to validate the email
-    const regex = /\S+@\S+\.\S+/;
-    if (!regex.test(req.body.email)) {
-      return res.status(400).json({ error: 'Invalid email' });
-    }
+    // Check if the user already exists
+    const userExists = await User.findOne({ where: { username: req.body.username } });
+    if (userExists) {
+      return res.status(400).json({ error: 'Username already exists' });
+    };
+
+    // Check if the email already exists
+    const emailExists = await User.findOne({ where: { email: req.body.email } });
+    if (emailExists) {
+      return res.status(400).json({ error: 'Email already exists' });
+    };
 
     // Hash the password
     const hashedPassword = await bcrypt.hash(req.body.password, 10);
