@@ -248,3 +248,12 @@ button:active {
     width: 100%;
     gap: 20px;
 }
+
+.errorBox {
+    background-color: #eb8c8c;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    border-radius: 4px;
+    border:  2px solid #d23a3a;
+    margin-top: 7px;
+}
