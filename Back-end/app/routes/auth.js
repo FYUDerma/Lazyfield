@@ -6,12 +6,22 @@ const router = express.Router();
 // Register
 router.post('/register', async (req, res) => {
   try {
+    // Use the regex to validate the email
+    const regex = /\S+@\S+\.\S+/;
+    if (!regex.test(req.body.email)) {
+      return res.status(400).json({ error: 'Invalid email' });
+    }
+
+    // Hash the password
     const hashedPassword = await bcrypt.hash(req.body.password, 10);
+
+    // Create a new user
     const user = await User.create({
       username: req.body.username,
       password: hashedPassword,
       email: req.body.email,
     });
+
     res.status(201).json({ message: 'User created successfully' });
   } catch (err) {
     res.status(400).json({ error: err });
