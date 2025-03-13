@@ -19,9 +19,8 @@ async function runTests() {
       email: 'test@lazyfield.com',
       carot: 0,
       isadmin: false
-    })
+    });
     users = await User.findAll();
-    console.log("====================================");
     console.log("Test 1: Adding a users");
     console.log(users);
     console.log("====================================");
