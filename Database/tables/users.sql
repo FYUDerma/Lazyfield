@@ -1,8 +1,0 @@
-CREATE TABLE Users (
-  userID SERIAL PRIMARY KEY,
-  username VARCHAR(255) UNIQUE NOT NULL,
-  passwords VARCHAR(255) NOT NULL,
-  email VARCHAR(255) UNIQUE NOT NULL,
-  carot INT NOT NULL,
-  isAdmin BOOLEAN
-);

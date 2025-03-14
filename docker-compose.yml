@@ -23,7 +23,7 @@ services:
       POSTGRES_DB: ${Lazyfield_DATABASE_NAME}
     volumes:
       - pgdata:/var/lib/postgresql/data
-      - ./Database/tables:/docker-entrypoint-initdb.d/tables
+      - ./Database/init.sql:/docker-entrypoint-initdb.d/init.sql
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${Lazyfield_DATABASE_NAME}"]
       interval: 10s
@@ -60,7 +60,8 @@ services:
     volumes:
       - ./Database/server.json:/pgadmin4/servers.json
     depends_on:
-      - db
+      db:
+        condition: service_healthy
       
 volumes:
   pgdata:
