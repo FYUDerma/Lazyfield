@@ -24,6 +24,11 @@ services:
     volumes:
       - pgdata:/var/lib/postgresql/data
       - ./Database/tables:/docker-entrypoint-initdb.d/tables
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${Lazyfield_DATABASE_NAME}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
   backend:
     image: node.js-express
     build:
@@ -39,7 +44,8 @@ services:
       DATABASE_PASSWORD: ${Lazyfield_DATABASE_PASSWORD}
       DATABASE_NAME: ${Lazyfield_DATABASE_NAME}
     depends_on:
-      - db
+      db:
+        condition: service_healthy
 
   pgadmin:
     container_name: Lazyfield-PgAdmin
