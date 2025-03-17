@@ -1,11 +1,15 @@
 const express = require('express');
-const cors = require('cors');  // Import CORS
+const cors = require('cors');
 const bcrypt = require('bcrypt');
 const path = require('path'); 
+const jwt = require('jsonwebtoken');
 const User = require('./app/model/users');
+const dotenv = require('dotenv');
+dotenv.config();
 
 const app = express();
 const port = 3000;
+const secretKey = process.env.JWT_SECRET_KEY;
 
 // Middleware
 app.use(cors());
@@ -63,6 +67,9 @@ app.post('/login', async (req, res) => {
     if (!isPasswordValid) {
       return res.status(400).json({ error: 'Invalid username or password' });
     }
+
+    // Generate a JWT token
+    const token = jwt.sign({ username: user.username, email: user.email }, secretKey, { expiresIn: '1h' });
 
     res.status(200).json({ message: 'Login successful' });
   } catch (err) {

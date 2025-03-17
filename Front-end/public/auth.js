@@ -1,5 +1,4 @@
 document.getElementById('registerButton').addEventListener('click', async function (register) {
-  console.log('Register button clicked'); // Log to confirm button click
   register.preventDefault();
 
   const username = document.getElementById('registerusername').value;
@@ -12,6 +11,7 @@ document.getElementById('registerButton').addEventListener('click', async functi
   // Validate password match
   if (password !== confirmPassword) {
     registerError.innerHTML = 'Passwords do not match';
+    registerError.classList.remove('hidden');
     return;
   };
 
@@ -19,6 +19,7 @@ document.getElementById('registerButton').addEventListener('click', async functi
   const emailRegex = /\S+@\S+\.\S+/;
   if (!emailRegex.test(email)) {
     registerError.innerHTML = 'Invalid email';
+    registerError.classList.remove('hidden');
     return;
   };
 
@@ -32,17 +33,19 @@ document.getElementById('registerButton').addEventListener('click', async functi
     const result = await response.json();
     if (response.ok) {
       registerError.innerHTML = 'User registered successfully';
+      registerError.classList.remove('hidden');
     } else {
       registerError.innerHTML = result.error || 'An error occurred, Please try again';
+      registerError.classList.remove('hidden');
     }
   } catch (err) {
-    console.error('Error during registration:', err); // Log any errors
+    console.error('Error during registration:', err);
     registerError.innerHTML = 'An error occurred, Please try again';
+    registerError.classList.remove('hidden');
   }
 });
 
 document.getElementById('loginButton').addEventListener('click', async function (login) {
-  console.log('Login button clicked'); // Log to confirm button click
   login.preventDefault();
 
   const username = document.getElementById('loginusername').value;
@@ -59,14 +62,16 @@ document.getElementById('loginButton').addEventListener('click', async function 
 
     const result = await response.json();
     if (response.ok) {
+      localStorage.setItem('token', result.token);
       loginError.innerHTML = 'Login successful';
       loginError.classList.remove('hidden');
+      window.location.href = 'game.html';
     } else {
       loginError.innerHTML = result.error || 'Invalid username or password';
       loginError.classList.remove('hidden');
     }
   } catch (err) {
-    console.error('Error during login:', err); // Log any errors
+    console.error('Error during login:', err);
     loginError.innerHTML = 'An error occurred, Please try again';
     loginError.classList.remove('hidden');
   }
