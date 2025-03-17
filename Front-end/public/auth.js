@@ -24,7 +24,7 @@ document.getElementById('registerButton').addEventListener('click', async functi
 
   try {
     const response = await fetch('http://localhost:3000/register', {
-      method: 'POST',
+      method: 'POST', 
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ username, email, password }),
     });
@@ -38,5 +38,36 @@ document.getElementById('registerButton').addEventListener('click', async functi
   } catch (err) {
     console.error('Error during registration:', err); // Log any errors
     registerError.innerHTML = 'An error occurred, Please try again';
+  }
+});
+
+document.getElementById('loginButton').addEventListener('click', async function (login) {
+  console.log('Login button clicked'); // Log to confirm button click
+  login.preventDefault();
+
+  const username = document.getElementById('loginusername').value;
+  const password = document.getElementById('loginpassword').value;
+
+  const loginError = document.getElementById('loginError');
+
+  try {
+    const response = await fetch('http://localhost:3000/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username, password }),
+    });
+
+    const result = await response.json();
+    if (response.ok) {
+      loginError.innerHTML = 'Login successful';
+      loginError.classList.remove('hidden');
+    } else {
+      loginError.innerHTML = result.error || 'Invalid username or password';
+      loginError.classList.remove('hidden');
+    }
+  } catch (err) {
+    console.error('Error during login:', err); // Log any errors
+    loginError.innerHTML = 'An error occurred, Please try again';
+    loginError.classList.remove('hidden');
   }
 });
