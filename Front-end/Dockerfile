@@ -1,16 +1,22 @@
-FROM nginx:alpine
+# Use the official Node.js image as the base image
+FROM node:18
 
-# Create the directory for the website
-RUN mkdir -p /srv/website
+# Install nginx
+RUN apt-get update && \
+    apt-get install -y nginx && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Copy the nginx configuration file
-COPY configs/nginx.conf /etc/nginx/conf.d/default.conf
+# Set the working directory
+WORKDIR /app
 
-# Copy the front-end build files to the website directory
-COPY dist/ /srv/website/
+# Copy application files
+COPY . .
 
-# Expose the port nginx will run on
-EXPOSE 80
+# Install Node.js dependencies
+RUN npm install
 
-# Start nginx
-CMD ["nginx", "-g", "daemon off;"]
+# Expose the necessary ports
+EXPOSE 8080
+
+# Start the application
+CMD ["npx", "vite", "--port", "8080", "--host", "0.0.0.0"]
