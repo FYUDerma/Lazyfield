@@ -22,11 +22,18 @@ document.getElementById('registerContainer').addEventListener('submit', async fu
   };
 
   try {
-    const response = await fetch('/register', {
+    const response = await fetch('http://backend:300/register', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ username, email, password }),
-    })
+    });
+
+    const result = await response.json();
+    if (response.ok) {
+      registerError.innerHTML = 'User registered successfully';
+    } else {
+      registerError.innerHTML = result.error || 'An error occurred, Please try again';
+    }
   } catch (err) {
     registerError.innerHTML = 'An error occurred, Please try again';
   }
