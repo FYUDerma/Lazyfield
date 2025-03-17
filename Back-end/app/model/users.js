@@ -27,7 +27,7 @@ const User = client.define('User', {
   },
   isadmin: {
     type: DataTypes.BOOLEAN,
-    allowNull: false
+    defaultValue: false
   }
 }, {
   tableName: 'users',
