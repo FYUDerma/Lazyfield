@@ -16,7 +16,7 @@ COPY . .
 RUN npm install
 
 # Expose the necessary ports
-EXPOSE 80 8080
+EXPOSE 8080
 
 # Start the application
-CMD ["npx", "vite"]
+CMD ["npx", "vite", "--port", "8080", "--host", "0.0.0.0"]
