@@ -1,16 +1,18 @@
 services:
   frontend:
-     image: nginx-three.js
-     build:
-       context: ./Front-end
-       dockerfile: Dockerfile
-     ports:
-       - "8080:8080"
-     depends_on:
-       backend:
-         condition: service_started
-       db:
-         condition: service_started
+    image: nginx-three.js
+    build:
+      context: ./Front-end
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    depends_on:
+      backend:
+        condition: service_started
+      db:
+        condition: service_started
+    networks:
+      - app_network
 
   db:
     container_name: Lazyfield-DB
@@ -29,6 +31,8 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+    networks:
+      - app_network
   backend:
     image: node.js-express
     build:
@@ -46,6 +50,8 @@ services:
     depends_on:
       db:
         condition: service_healthy
+    networks:
+      - app_network
 
   pgadmin:
     container_name: Lazyfield-PgAdmin
@@ -62,6 +68,12 @@ services:
     depends_on:
       db:
         condition: service_healthy
+    networks:
+      - app_network
       
 volumes:
   pgdata:
+
+networks:
+  app_network:
+    driver: bridge
