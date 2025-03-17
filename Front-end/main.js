@@ -55,7 +55,7 @@ const light = new THREE.HemisphereLight(skyColor, groundColor, intensity);
 scene.add(light);
 
 // HELP GRID
-scene.add(new THREE.GridHelper(10, 10));
+//scene.add(new THREE.GridHelper(10, 10));
 
 //3D MODELS
 modelloader.load('./assets/models/carrot.glb', function(model) {
@@ -74,7 +74,7 @@ modelloader.load('./assets/models/carrot.glb', function(model) {
 });
 
 //var miniCarrotUpgrade = upgrades[1]
-//var miniCarrotsNumber = miniCarrotUpgrade.purchased
+var miniCarrotsNumber = 10
 //function setMiniCarrot
 //for (let index = 0; index < miniCarrotUpgrade.purchased; index++) {
 var time = 0;
