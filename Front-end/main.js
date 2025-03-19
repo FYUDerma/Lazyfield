@@ -54,11 +54,13 @@ const intensity = 5;
 const light = new THREE.HemisphereLight(skyColor, groundColor, intensity);
 scene.add(light);
 
+// HELP GRID
+//scene.add(new THREE.GridHelper(10, 10));
+
 //3D MODELS
 modelloader.load('./assets/models/carrot.glb', function(model) {
     var carrot = model.scene.children[0];
     carrot.scale.set(3,3,3)
-    //carrot.rotateX(Math.PI / 180 * -45)
     scene.add (model.scene);
     function animate() {
         requestAnimationFrame(animate);
@@ -70,6 +72,37 @@ modelloader.load('./assets/models/carrot.glb', function(model) {
 }, undefined, function(error) {
     console.error(error);
 });
+
+//var miniCarrotUpgrade = upgrades[1]
+var miniCarrotsNumber = 10
+//function setMiniCarrot
+//for (let index = 0; index < miniCarrotUpgrade.purchased; index++) {
+var time = 0;
+var radius = 2;
+var clock = new THREE.Clock();
+for (let index = 0; index <= (miniCarrotsNumber - 1); index++) {
+    modelloader.load('./assets/models/miniCarrot.glb', function(model) {
+        var miniCarrot = model.scene.children[0];
+        miniCarrot.scale.set(1,1,1)
+        scene.add (model.scene);
+        function animate() {
+            requestAnimationFrame(animate);
+            time = clock.getElapsedTime() * 0.1 * Math.PI;
+            let number = radius / miniCarrotsNumber
+            miniCarrot.position.set(
+                Math.sin(time + Math.PI * number * index) * radius,
+                Math.sin(time * 2 + index * 0.5) * 0.1,
+                Math.cos(time + Math.PI * number * index) * radius
+            )
+            miniCarrot.rotation.y += 0.02;
+            //miniCarrot.lookAt(0,0,0)
+            renderer.render(scene, camera);
+        };
+        animate();
+    }, undefined, function(error) {
+        console.error(error);
+    });
+}
 
 function animate() {
     renderer.render( scene, camera );
