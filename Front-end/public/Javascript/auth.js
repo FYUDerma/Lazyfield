@@ -15,6 +15,13 @@ document.getElementById('registerButton').addEventListener('click', async functi
     return;
   };
 
+  // Validate password length
+  if (password.length < 6) {
+    registerError.innerHTML = 'Password must be at least 6 characters long';
+    registerError.classList.remove('hidden');
+    return;
+  }
+
   // Validate email format
   const emailRegex = /\S+@\S+\.\S+/;
   if (!emailRegex.test(email)) {
@@ -24,7 +31,7 @@ document.getElementById('registerButton').addEventListener('click', async functi
   };
 
   try {
-    const response = await fetch('http://localhost:3000/register', {
+    const response = await fetch('http://localhost:3000/api/users/register', {
       method: 'POST', 
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ username, email, password }),
@@ -54,7 +61,7 @@ document.getElementById('loginButton').addEventListener('click', async function 
   const loginError = document.getElementById('loginError');
 
   try {
-    const response = await fetch('http://localhost:3000/login', {
+    const response = await fetch('http://localhost:3000/api/users/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ username, password }),
