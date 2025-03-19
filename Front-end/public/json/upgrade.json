@@ -1,0 +1,40 @@
+{
+  "upgrade": [
+    {
+      "id": 1,
+      "name": "Double clicks",
+      "description": "Double the amount of clicks you get per click",
+      "cost": 10,
+      "multiplier": 2,
+      "type": "click",
+      "requirement": ""
+    },
+    {
+      "id": 2,
+      "name": "Quadruple clicks",
+      "description": "Quadruple the amount of clicks you get per click",
+      "cost": 50,
+      "multiplier": 4,
+      "type": "click",
+      "requirement": "Double clicks"
+    },
+    {
+      "id": "3",
+      "name": "Octo Clicks",
+      "description": "Octo the amount of clicks you get per click",
+      "cost": 500,
+      "multiplier": 8,
+      "type": "click",
+      "requirement": "Quadruple clicks"
+    },
+    {
+      "id": "4",
+      "name": "Auto Clicker",
+      "description": "Automatically clicks for you",
+      "cost": 50,
+      "multiplier": 1,
+      "type": "auto",
+      "requirement": ""
+    }
+  ]
+}
