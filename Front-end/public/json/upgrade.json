@@ -7,34 +7,58 @@
       "cost": 10,
       "multiplier": 2,
       "type": "click",
-      "requirement": ""
+      "requirement": "",
+      "limit": 1
     },
     {
       "id": 2,
       "name": "Quadruple clicks",
       "description": "Quadruple the amount of clicks you get per click",
       "cost": 50,
-      "multiplier": 4,
+      "multiplier": 2,
       "type": "click",
-      "requirement": "Double clicks"
+      "requirement": "Double clicks",
+      "limit": 1
     },
     {
-      "id": "3",
+      "id": 3,
       "name": "Octo Clicks",
       "description": "Octo the amount of clicks you get per click",
       "cost": 500,
-      "multiplier": 8,
+      "multiplier": 2,
       "type": "click",
-      "requirement": "Quadruple clicks"
+      "requirement": "Quadruple clicks",
+      "limit": 1
     },
     {
-      "id": "4",
+      "id": 4,
       "name": "Auto Clicker",
       "description": "Automatically clicks for you",
       "cost": 50,
       "multiplier": 1,
-      "type": "auto",
-      "requirement": ""
+      "type": "passive",
+      "requirement": "",
+      "limit": 20
+    },
+    {
+      "id": 5,
+      "name": "Mini Carrot",
+      "description": "Starts generating passive clicks",
+      "cost": 100,
+      "multiplier": 1,
+      "type": "passive",
+      "requirement": "",
+      "limit": 50
+    },
+    {
+      "id": 6,
+      "name": "Garden",
+      "description": "Starts generating passive clicks",
+      "cost": 1000,
+      "multiplier": 10,
+      "type": "passive",
+      "requirement": "Mini Carrot",
+      "limit": 50
     }
   ]
 }

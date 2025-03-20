@@ -3,12 +3,16 @@ let clickMultiplier = 1;
 let totalPassiveClicksPerSecond = 0;
 let passiveClickInterval = null;
 
+import { saveProgressionToDB, loadProgressionFromDB } from './public/Javascript/progression.js';
+
 const playerClickCountElem = document.getElementById('playerClickCount');
 const clickZone = document.getElementById('clickZone');
 const menuButton = document.getElementById('menuButton');
 const menuBox = document.getElementById('menuBox');
 const upgradesButton = document.getElementById('upgradesButton');
 const upgradesMenu = document.getElementById('upgradesMenu');
+const saveButton = document.getElementById('saveButton');
+const loadButton = document.getElementById('loadButton');
 const resetButton = document.getElementById('resetButton');
 
 menuButton.addEventListener('click', () => {
@@ -20,6 +24,67 @@ upgradesButton.addEventListener('click', () => {
 resetButton.addEventListener('click', () => {
     resetProgression();
 });
+
+saveButton.addEventListener('click', () => {
+    const serializableUpgrades = upgrades.map((upgrade) => ({
+        name: upgrade.name,
+        cost: upgrade.cost,
+        purchased: upgrade.purchased,
+        multiplier: upgrade.multiplier,
+        multiple: upgrade.multiple,
+    }));
+    saveProgressionToDB(clickCount, serializableUpgrades, clickMultiplier);
+});
+
+loadButton.addEventListener('click', async () => {
+    const gameState = await loadProgressionFromDB();
+    applyLoadedProgression(gameState);
+});
+
+export function applyLoadedProgression(gameState) {
+    if (!gameState) return;
+
+    // Update click count
+    clickCount = gameState.clicks || 0;
+    playerClickCountElem.textContent = clickCount;
+
+    // Update click multiplier
+    clickMultiplier = gameState.clickMultiplier || 1;
+
+    // Update upgrades
+    if (gameState.upgrades) {
+        upgrades = gameState.upgrades.map(savedUpgrade => {
+            const baseUpgrade = baseUpgrades.find(base => base.name === savedUpgrade.name);
+            if (baseUpgrade) {
+                return {
+                    ...baseUpgrade,
+                    purchased: savedUpgrade.purchased || 0,
+                    multiplier: savedUpgrade.multiplier || baseUpgrade.multiplier,
+                };
+            }
+            return savedUpgrade;
+        });
+    }
+
+    // Restore passive click rate
+    totalPassiveClicksPerSecond = gameState.totalPassiveClicksPerSecond || 0;
+    if (totalPassiveClicksPerSecond > 0) {
+        startPassiveClicks(0);
+    }
+    
+    // Apply purchased passive upgrades again
+    for (const upgrade of upgrades) {
+        if (upgrade.purchased > 0 && upgrade.effect) {
+            for (let i = 0; i < upgrade.purchased; i++) {
+                upgrade.effect();
+            }
+        }
+    }
+    
+    // Update UI
+    displayUpgrades();
+    renderminicarrot();
+}
 
 const baseUpgrades = [
     { name: 'Mini Carrot', cost: 100, effect: () => startPassiveClicks(1), purchased: 0, multiple: true },
@@ -178,7 +243,20 @@ function resetProgression() {
     saveProgression();
 }
 
-window.onload = () => {
+function checkForMidnightAutoSave() {
+    setInterval(() => {
+        const now = new Date();
+        if (now.getHours() === 0 && now.getMinutes() === 0) {
+            saveProgressionToDB(clickCount, upgrades);
+            console.log("Auto-saved progression at midnight!");
+        }
+    }, 60000);
+}
+
+checkForMidnightAutoSave();
+
+window.onload = async () => {
+    await loadProgressionFromDB();
     loadProgression();
     displayUpgrades();
     renderminicarrot();

@@ -24,10 +24,17 @@ const GameState = client.define('GameState', {
     type: DataTypes.JSON,
     defaultValue: {}
   },
+  clickMultiplier: {
+    type: DataTypes.INTEGER,
+    defaultValue: 1
+  },
   lastSaved: {
     type: DataTypes.DATE,
     defaultValue: DataTypes.NOW
   },
+}, {
+  tableName: 'gamestate',
+  timestamps: false
 });
 
 User.hasOne(GameState, { foreignKey: 'userid' });
