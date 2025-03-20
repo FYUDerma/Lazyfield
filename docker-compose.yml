@@ -1,24 +1,18 @@
 services:
   frontend:
-     image: nginx-three.js
-     build:
-       context: ./Front-end
-       dockerfile: Dockerfile
-     ports:
-       - "8080"
-     depends_on:
-       backend:
-         condition: service_started
-       db:
-         condition: service_started
-
-  backend:
-    image: node.js-express
+    image: nginx-three.js
     build:
-      context: ./Back-end
+      context: ./Front-end
       dockerfile: Dockerfile
     ports:
-      - "3000"
+      - "8080:8080"
+    depends_on:
+      backend:
+        condition: service_started
+      db:
+        condition: service_started
+    networks:
+      - app_network
 
   db:
     container_name: Lazyfield-DB
@@ -32,6 +26,32 @@ services:
     volumes:
       - pgdata:/var/lib/postgresql/data
       - ./Database/init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${Lazyfield_DATABASE_NAME}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - app_network
+  backend:
+    image: node.js-express
+    build:
+      context: ./Back-end
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+    environment:
+      DATABASE_HOST: ${Lazyfield_DATABASE_HOST}
+      DATABASE_USER: ${Lazyfield_DATABASE_USER}
+      DATABASE_PASSWORD: ${Lazyfield_DATABASE_PASSWORD}
+      DATABASE_NAME: ${Lazyfield_DATABASE_NAME}
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - app_network
 
   pgadmin:
     container_name: Lazyfield-PgAdmin
@@ -46,7 +66,14 @@ services:
     volumes:
       - ./Database/server.json:/pgadmin4/servers.json
     depends_on:
-      - db
+      db:
+        condition: service_healthy
+    networks:
+      - app_network
       
 volumes:
   pgdata:
+
+networks:
+  app_network:
+    driver: bridge

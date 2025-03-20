@@ -272,8 +272,10 @@ modelloader.load('./assets/models/carrot.glb', function(model) {
 await loadProgression();
 var miniCarrots = []
 function renderminicarrot() {
-    var miniCarrotUpgrade = upgrades[0];
-    var miniCarrotsNumber = miniCarrotUpgrade.purchased;
+    let miniCarrotsNumber = upgrades[0].purchased;
+    if (miniCarrotsNumber > 20) {
+        miniCarrotsNumber = 20
+    };
     for (let index = 0; index <= miniCarrotsNumber - miniCarrots.length - 1; index++) {
         modelloader.load('./assets/models/miniCarrot.glb', function(model) {
             var miniCarrot = model.scene.children[0];
@@ -290,7 +292,11 @@ function renderminicarrot() {
 };
     function animateminicarrots(clock) {
         const radius = 2;
-        let number = radius / upgrades[0].purchased;
+        let miniCarrotsNumber = upgrades[0].purchased;
+        if (miniCarrotsNumber > 20) {
+            miniCarrotsNumber = 20
+        };
+        let number = radius / miniCarrotsNumber;
         for (let index = 0; index < miniCarrots.length; index++) {
             const miniCarrot = miniCarrots[index];
             var time = clock.getElapsedTime() * 0.1 * Math.PI;
