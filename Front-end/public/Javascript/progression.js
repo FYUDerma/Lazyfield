@@ -1,3 +1,5 @@
+import { applyLoadedProgression } from '../../clicker.js';
+
 // Save progression to the database
 export async function saveProgressionToDB(clickCount, upgrades) {
   try {
