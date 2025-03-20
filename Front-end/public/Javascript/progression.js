@@ -1,7 +1,7 @@
 import { applyLoadedProgression } from '../../clicker.js';
 
 // Save progression to the database
-export async function saveProgressionToDB(clickCount, upgrades) {
+export async function saveProgressionToDB(clickCount, upgrades, clickMultiplier) {
   try {
       const token = localStorage.getItem('token');
       const response = await fetch('http://localhost:3000/api/state/save', {
@@ -13,7 +13,8 @@ export async function saveProgressionToDB(clickCount, upgrades) {
           body: JSON.stringify({
               username: localStorage.getItem('username'),
               clicks: clickCount,
-              upgrades: upgrades
+              upgrades: upgrades,
+              clickMultiplier: clickMultiplier,
           })
       });
 

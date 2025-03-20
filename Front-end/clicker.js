@@ -30,9 +30,10 @@ saveButton.addEventListener('click', () => {
         name: upgrade.name,
         cost: upgrade.cost,
         purchased: upgrade.purchased,
+        multiplier: upgrade.multiplier,
         multiple: upgrade.multiple,
     }));
-    saveProgressionToDB(clickCount, serializableUpgrades);
+    saveProgressionToDB(clickCount, serializableUpgrades, clickMultiplier);
 });
 
 loadButton.addEventListener('click', async () => {
@@ -47,6 +48,9 @@ export function applyLoadedProgression(gameState) {
     clickCount = gameState.clicks || 0;
     playerClickCountElem.textContent = clickCount;
 
+    // Update click multiplier
+    clickMultiplier = gameState.clickMultiplier || 1;
+
     // Update upgrades
     if (gameState.upgrades) {
         upgrades = gameState.upgrades.map(savedUpgrade => {
@@ -55,12 +59,13 @@ export function applyLoadedProgression(gameState) {
                 return {
                     ...baseUpgrade,
                     purchased: savedUpgrade.purchased || 0,
+                    multiplier: savedUpgrade.multiplier || baseUpgrade.multiplier,
                 };
             }
             return savedUpgrade;
         });
     }
-    
+
     // Restore passive click rate
     totalPassiveClicksPerSecond = gameState.totalPassiveClicksPerSecond || 0;
     if (totalPassiveClicksPerSecond > 0) {
