@@ -12,6 +12,8 @@ CREATE TABLE GameState (
   userID UUID NOT NULL,
   clicks INT DEFAULT 0,
   upgrades JSON DEFAULT '{}',
+  clickMultiplier INT DEFAULT 1,
   lastSaved TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (userID) REFERENCES Users(userID) ON DELETE CASCADE
 );
+
