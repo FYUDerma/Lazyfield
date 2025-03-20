@@ -70,6 +70,7 @@ document.getElementById('loginButton').addEventListener('click', async function 
     const result = await response.json();
     if (response.ok) {
       localStorage.setItem('token', result.token);
+      localStorage.setItem('username', username);
       loginError.innerHTML = 'Login successful';
       loginError.classList.remove('hidden');
       window.location.href = 'game.html';
