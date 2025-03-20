@@ -270,6 +270,7 @@ modelloader.load('./assets/models/carrot.glb', function(model) {
 });
 
 await loadProgression();
+// Mini Carrots upgrade
 var miniCarrots = []
 function renderminicarrot() {
     let miniCarrotsNumber = upgrades[0].purchased;
@@ -279,7 +280,6 @@ function renderminicarrot() {
     for (let index = 0; index <= miniCarrotsNumber - miniCarrots.length - 1; index++) {
         modelloader.load('./assets/models/miniCarrot.glb', function(model) {
             var miniCarrot = model.scene.children[0];
-            console.log(typeof miniCarrot)
             miniCarrot.scale.set(1,1,1)
             scene.add (model.scene);
             miniCarrots.push(miniCarrot);
@@ -309,7 +309,7 @@ function renderminicarrot() {
         }
         
     }
-// grass block
+// Garden Upgrade
 modelloader.load('./assets/models/block-grass-low-large.glb', function(model) {
     var grassBlock = model.scene.children[0];
     grassBlock.scale.set(1.5,1,1.5)
@@ -326,5 +326,3 @@ function animate() {
     renderer.render( scene, camera );
     controls.update();
 };
-
-console.log(upgrades)
