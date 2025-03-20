@@ -8,7 +8,7 @@ const router = express.Router();
 // Save progress
 router.post('/save', authenticateToken, async (req, res) => {
   try {
-    const { username, clicks, upgrades } = req.body;
+    const { username, clicks, upgrades, clickMultiplier } = req.body;
 
     // Find the user
     const user = await User.findOne({ where: { username } });
@@ -16,16 +16,23 @@ router.post('/save', authenticateToken, async (req, res) => {
       return res.status(404).json({ error: 'User not found' });
     }
 
+    // Delete any existing game state for the user
+    await GameState.destroy({ where: { userid: user.userid } });
+
     // Find or Create the game state
-    const [gameState, created] = await GameState.findOrCreate({ 
-      where: { userid: user.userid },
-      defaults: { clicks, upgrades }
-    });
+    const [gameState, created] = await GameState.create({
+      userid: user.userid,
+      clicks,
+      upgrades,
+      clickMultiplier,
+      lastSaved: new Date()
+  });
 
     // Update the game state if it already exists
     if (!created) {
       gameState.clicks = clicks;
       gameState.upgrades = upgrades;
+      gameState.clickMultiplier = clickMultiplier;  
       gameState.lastSaved = new Date();
       await gameState.save();
     }

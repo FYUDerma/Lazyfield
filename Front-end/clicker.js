@@ -26,7 +26,14 @@ resetButton.addEventListener('click', () => {
 });
 
 saveButton.addEventListener('click', () => {
-    saveProgressionToDB(clickCount, upgrades);
+    const serializableUpgrades = upgrades.map((upgrade) => ({
+        name: upgrade.name,
+        cost: upgrade.cost,
+        purchased: upgrade.purchased,
+        multiplier: upgrade.multiplier,
+        multiple: upgrade.multiple,
+    }));
+    saveProgressionToDB(clickCount, serializableUpgrades, clickMultiplier);
 });
 
 loadButton.addEventListener('click', async () => {
@@ -41,14 +48,18 @@ export function applyLoadedProgression(gameState) {
     clickCount = gameState.clicks || 0;
     playerClickCountElem.textContent = clickCount;
 
+    // Update click multiplier
+    clickMultiplier = gameState.clickMultiplier || 1;
+
     // Update upgrades
     if (gameState.upgrades) {
-        upgrades = gameState.upgrades.map((savedUpgrade) => {
+        upgrades = gameState.upgrades.map(savedUpgrade => {
             const baseUpgrade = baseUpgrades.find(base => base.name === savedUpgrade.name);
             if (baseUpgrade) {
                 return {
                     ...baseUpgrade,
-                    purchased: savedUpgrade.purchased || 0
+                    purchased: savedUpgrade.purchased || 0,
+                    multiplier: savedUpgrade.multiplier || baseUpgrade.multiplier,
                 };
             }
             return savedUpgrade;
