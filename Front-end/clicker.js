@@ -200,7 +200,7 @@ function displayUpgrades() {
     const upgradeList = document.getElementById('upgradeList');
     upgradeList.innerHTML = '';
     upgrades.forEach((upgrade, index) => {
-        const li = document.createElement('li');
+        const li = document.createElement('div');
         li.textContent = `${upgrade.name} - Cost: ${upgrade.cost} carrots${upgrade.multiple ? ` (Purchased: ${upgrade.purchased})` : ''}`;
         li.addEventListener('click', () => purchaseUpgrade(index));
         upgradeList.appendChild(li);
@@ -241,6 +241,7 @@ function resetProgression() {
     playerClickCountElem.textContent = clickCount;
     displayUpgrades();
     saveProgression();
+    location.reload();
 }
 
 function checkForMidnightAutoSave() {
