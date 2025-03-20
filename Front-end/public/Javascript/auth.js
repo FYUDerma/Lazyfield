@@ -39,8 +39,9 @@ document.getElementById('registerButton').addEventListener('click', async functi
 
     const result = await response.json();
     if (response.ok) {
-      registerError.innerHTML = 'User registered successfully';
-      registerError.classList.remove('hidden');
+      registerError.classList.add('hidden');
+      registerSuccess.innerHTML = 'User registered successfully';
+      registerSuccess.classList.remove('hidden');
     } else {
       registerError.innerHTML = result.error || 'An error occurred, Please try again';
       registerError.classList.remove('hidden');
@@ -71,8 +72,6 @@ document.getElementById('loginButton').addEventListener('click', async function 
     if (response.ok) {
       localStorage.setItem('token', result.token);
       localStorage.setItem('username', username);
-      loginError.innerHTML = 'Login successful';
-      loginError.classList.remove('hidden');
       window.location.href = 'game.html';
     } else {
       loginError.innerHTML = result.error || 'Invalid username or password';

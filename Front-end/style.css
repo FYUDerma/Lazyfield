@@ -256,3 +256,11 @@ button:active {
     border:  2px solid #d23a3a;
     margin-top: 7px;
 }
+
+.successBox {
+    background-color: #8ceb96;
+    padding: 4px 4px;
+    border-radius: 4px;
+    border:  2px solid #3fd23a;
+    margin-top: 7px;
+}
