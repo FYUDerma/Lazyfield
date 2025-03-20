@@ -3,7 +3,7 @@ let clickMultiplier = 1;
 let totalPassiveClicksPerSecond = 0;
 let passiveClickInterval = null;
 
-import { saveProgressionToDB } from './public/Javascript/progression.js';
+import { saveProgressionToDB, loadProgressionFromDB } from './public/Javascript/progression.js';
 
 const playerClickCountElem = document.getElementById('playerClickCount');
 const clickZone = document.getElementById('clickZone');
@@ -30,37 +30,11 @@ saveButton.addEventListener('click', () => {
 });
 
 loadButton.addEventListener('click', async () => {
-    await loadProgressionFromDB();
+    const gameState = await loadProgressionFromDB();
+    applyLoadedProgression(gameState);
 });
 
-export async function loadProgressionFromDB() {
-    try {
-        const token = localStorage.getItem('token'); // Ensure the user is authenticated
-        const username = localStorage.getItem('username'); // Retrieve username from localStorage
-  
-        const response = await fetch(`http://localhost:3000/api/state/load/${username}`, {
-            method: 'GET',
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
-        });
-  
-        if (!response.ok) {
-            throw new Error('Failed to load progression');
-        }
-  
-        const data = await response.json();
-        console.log('Progress loaded from the database:', data.gameState);
-        
-        // Apply loaded data
-        applyLoadedProgression(data.gameState);
-        
-    } catch (error) {
-        console.error('Error loading progression:', error);
-    }
-  }
-
-function applyLoadedProgression(gameState) {
+export function applyLoadedProgression(gameState) {
     if (!gameState) return;
 
     // Update click count
@@ -73,8 +47,8 @@ function applyLoadedProgression(gameState) {
             const baseUpgrade = baseUpgrades.find(base => base.name === savedUpgrade.name);
             if (baseUpgrade) {
                 return {
-                    ...baseUpgrade, // Keep the original effect function
-                    purchased: savedUpgrade.purchased || 0 // Restore the purchase count
+                    ...baseUpgrade,
+                    purchased: savedUpgrade.purchased || 0
                 };
             }
             return savedUpgrade;
@@ -84,7 +58,7 @@ function applyLoadedProgression(gameState) {
     // Restore passive click rate
     totalPassiveClicksPerSecond = gameState.totalPassiveClicksPerSecond || 0;
     if (totalPassiveClicksPerSecond > 0) {
-        startPassiveClicks(0); // Restart passive clicks
+        startPassiveClicks(0);
     }
     
     // Apply purchased passive upgrades again
