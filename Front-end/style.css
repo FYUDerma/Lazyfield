@@ -92,6 +92,7 @@ body {
     padding-right: 2
     0px;
     padding-left: 15px;
+    padding-right: 15px;
 }
 
 /* +1 particle */
@@ -187,6 +188,7 @@ button:active {
     font-size: 15px;
     font-family: Arial, Helvetica, sans-serif;
     text-align: center;
+    user-select: none;
 }
 
 /* Login page elements */
@@ -263,4 +265,13 @@ button:active {
     border-radius: 4px;
     border:  2px solid #3fd23a;
     margin-top: 7px;
+}
+
+.upgrade {
+    background-color: #dadada;
+    border:  1px solid #b4b4b4;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    padding-right: 7px;
 }

@@ -87,11 +87,11 @@ export function applyLoadedProgression(gameState) {
 }
 
 const baseUpgrades = [
-    { name: 'Mini Carrot', cost: 100, effect: () => startPassiveClicks(1), purchased: 0, multiple: true },
-    { name: 'Garden', cost: 1000, effect: () => startPassiveClicks(10), purchased: 0, multiple: true },
-    { name: 'Double Clicks', cost: 10, effect: () => clickMultiplier *= 2, purchased: 0, multiple: false },
-    { name: 'Quadruple Clicks', cost: 50, effect: () => clickMultiplier *= 2, purchased: 0, multiple: false },
-    { name: 'Octo Clicks', cost: 500, effect: () => clickMultiplier *= 2, purchased: 0, multiple: false },
+    { name: 'Mini Carrot', cost: 100, effect: () => startPassiveClicks(1), purchased: 0, multiple: true, image: "./assets/ui/upgrades/image.webp" },
+    { name: 'Garden', cost: 1000, effect: () => startPassiveClicks(10), purchased: 0, multiple: true, image: "./assets/ui/upgrades/image-1.webp" },
+    { name: 'Double Clicks', cost: 10, effect: () => clickMultiplier *= 2, purchased: 0, multiple: false, image: "./assets/ui/upgrades/image-3.webp" },
+    { name: 'Quadruple Clicks', cost: 50, effect: () => clickMultiplier *= 2, purchased: 0, multiple: false, image: "./assets/ui/upgrades/image-5.webp" },
+    { name: 'Octo Clicks', cost: 500, effect: () => clickMultiplier *= 2, purchased: 0, multiple: false, image: "./assets/ui/upgrades/XKP39Dr.webp" },
 ];
 
 let upgrades = JSON.parse(JSON.stringify(baseUpgrades));
@@ -201,7 +201,26 @@ function displayUpgrades() {
     upgradeList.innerHTML = '';
     upgrades.forEach((upgrade, index) => {
         const li = document.createElement('div');
-        li.textContent = `${upgrade.name} - Cost: ${upgrade.cost} carrots${upgrade.multiple ? ` (Purchased: ${upgrade.purchased})` : ''}`;
+
+        // Create image element
+        const img = document.createElement('img');
+        img.src = upgrade.image;
+        img.alt = upgrade.name;
+        img.style.width = '50px'; // Adjust the size as needed
+        img.style.height = '50px'; // Adjust the size as needed
+        img.style.marginRight = '10px'; // Adjust the spacing as needed
+
+        // Append image to the li element
+        li.appendChild(img);
+
+        // Create text content
+        const text = document.createElement('span');
+        text.textContent = `${upgrade.name} - Cost: ${upgrade.cost} carrots${upgrade.multiple ? ` (Purchased: ${upgrade.purchased})` : ''}`;
+
+        // Append text content to the li element
+        li.appendChild(text);
+        li.classList.add('upgrade')
+
         li.addEventListener('click', () => purchaseUpgrade(index));
         upgradeList.appendChild(li);
     });
