@@ -28,6 +28,9 @@ const GameState = client.define('GameState', {
     type: DataTypes.DATE,
     defaultValue: DataTypes.NOW
   },
+}, {
+  tableName: 'gamestate',
+  timestamps: false
 });
 
 User.hasOne(GameState, { foreignKey: 'userid' });
