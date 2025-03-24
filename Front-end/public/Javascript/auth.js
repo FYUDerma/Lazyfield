@@ -12,8 +12,8 @@ document.getElementById('registerButton').addEventListener('click', async functi
   if (!username || !email || !password || !confirmPassword) {
     registerError.innerHTML = 'All fields are required';
     registerError.classList.remove('hidden');
-    return;
-  }
+    return
+  };
 
   // Validate password match
   if (password !== confirmPassword) {
