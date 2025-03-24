@@ -8,6 +8,13 @@ document.getElementById('registerButton').addEventListener('click', async functi
 
   const registerError = document.getElementById('registerError');
 
+  // Validate empty fields
+  if (!username || !email || !password || !confirmPassword) {
+    registerError.innerHTML = 'All fields are required';
+    registerError.classList.remove('hidden');
+    return;
+  }
+
   // Validate password match
   if (password !== confirmPassword) {
     registerError.innerHTML = 'Passwords do not match';
