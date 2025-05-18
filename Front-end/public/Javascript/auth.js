@@ -8,35 +8,6 @@ document.getElementById('registerButton').addEventListener('click', async functi
 
   const registerError = document.getElementById('registerError');
 
-  // Validate empty fields
-  if (!username || !email || !password || !confirmPassword) {
-    registerError.innerHTML = 'All fields are required';
-    registerError.classList.remove('hidden');
-    return
-  };
-
-  // Validate password match
-  if (password !== confirmPassword) {
-    registerError.innerHTML = 'Passwords do not match';
-    registerError.classList.remove('hidden');
-    return;
-  };
-
-  // Validate password length
-  if (password.length < 6) {
-    registerError.innerHTML = 'Password must be at least 6 characters long';
-    registerError.classList.remove('hidden');
-    return;
-  }
-
-  // Validate email format
-  const emailRegex = /\S+@\S+\.\S+/;
-  if (!emailRegex.test(email)) {
-    registerError.innerHTML = 'Invalid email';
-    registerError.classList.remove('hidden');
-    return;
-  };
-
   try {
     const response = await fetch('http://localhost:3000/api/users/register', {
       method: 'POST', 

@@ -13,14 +13,29 @@ router.post('/register', async (req, res) => {
   try {
     console.log('Register request received:', req.body);
 
+    const requiredFields = ['username', 'password', 'confirmPassword', 'email'];
+    for (const field of requiredFields) {
+      if (!req.body[field]) {
+        return res.status(400).json({ error: `All Field must be Fiiled` });
+      }
+    }
+
+    if (req.body.password !== req.body.confirmPassword) {
+      return res.status(400).json({ error: 'Passwords do not match' });
+    }
+
+    if (req.body.password.length < 6) {
+      return res.status(400).json({ error: 'Password must be at least 6 characters long' });
+    }
+
     const userExists = await User.findOne({ where: { username: req.body.username } });
     if (userExists) {
       return res.status(400).json({ error: 'Username already exists' });
     }
 
-    const emailExists = await User.findOne({ where: { email: req.body.email } });
-    if (emailExists) {
-      return res.status(400).json({ error: 'Email already exists' });
+    const emailRegex = /\S+@\S+\.\S+/;
+    if (!emailRegex.test(req.body.email)) {
+      return res.status(400).json({ error: 'Invalid email format' });
     }
 
     const hashedPassword = await bcrypt.hash(req.body.password, 10);
